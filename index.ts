@@ -1,5 +1,6 @@
 console.log('hello');
-var person = {
+
+var person: { name: string; age: number } = {
   name: 'aaa',
   age: 50,
 };
