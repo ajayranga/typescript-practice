@@ -1,0 +1,18 @@
+{
+  "name": "ts-practice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ajayranga/typescript-practice.git",
+  "author": "Ajay <ajay.ranga.mr.unique@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "frontend": "lite-server",
+    "compile": "tsc -w index.ts",
+    "start": "concurrently -c \"red,yellow\" -n \"compiler,lite-server\" \"yarn run compile\" \"yarn run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.4.0",
+    "lite-server": "^2.6.1",
+    "typescript": "^4.8.4"
+  }
+}
