@@ -7,8 +7,10 @@
   "license": "MIT",
   "scripts": {
     "frontend": "lite-server",
-    "compile": "tsc -w index.ts",
-    "start": "concurrently -c \"red,yellow\" -n \"compiler,lite-server\" \"yarn run compile\" \"yarn run frontend\""
+    "compile": "tsc -w",
+    "compile2": "tsc -w index.ts --outDir dist",
+    "start": "concurrently -c \"red,yellow\" -n \"compiler,lite-server\" \"yarn run compile\" \"yarn run frontend\"",
+    "start2": "concurrently -c \"red,yellow\" -n \"compiler,lite-server\" \"yarn run compile2\" \"yarn run frontend\""
   },
   "devDependencies": {
     "concurrently": "^7.4.0",
