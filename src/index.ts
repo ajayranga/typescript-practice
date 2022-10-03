@@ -1,4 +1,3 @@
-console.log('first');
 type person = {
   name: string;
   age: number;
