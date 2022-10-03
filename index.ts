@@ -1,24 +1,102 @@
-console.log('hello');
-var person = {
-  name: 'aaa',
-  age: 50,
-};
+abstract class Department {
+  protected name: string;
+  public readonly id: string;
+  protected employees: string[];
+  static countObj: number = 0;
 
-console.log(person.name);
+  constructor(name: string, id: string) {
+    this.name = name;
+    this.employees = [];
+    this.id = id;
+  }
+  abstract describe(this: Department): void;
 
-((num) => console.log(num * num))(5);
+  addEmployee(employee: string) {
+    Department.incCount();
+    this.employees.push(employee);
+  }
+  printEmployeeInfo() {
+    console.log('Countobject contains', Department.countObj);
+    console.log(this.employees);
+  }
+  static incCount() {
+    this.countObj++;
+  }
+}
+class ITDepartment extends Department {
+  admins: string[];
+  id: string;
+  constructor(id: string, admins: string[]) {
+    super('ITDepartment', id);
+    this.id = id;
+    this.admins = admins;
+  }
+  describe(this: Department): void {
+    console.log(`IT Department ${this.id}`);
+  }
+}
+class AccountingDepartment extends Department {
+  reports: string[];
+  id: string;
+  private lastReport: string;
+  private static instance: AccountingDepartment;
 
-const newPerson = person;
-const newPerson2 = { ...person };
-console.log(newPerson, newPerson2);
-const add = (...numb: number[]) =>
-  numb.reduce((prev, current) => prev + current, 55);
+  get mostRecentReport() {
+    if (this.lastReport) return this.lastReport;
+    throw new Error('No report exists!!!!');
+  }
+  set mostRecentReport(val: string) {
+    if (val) this.lastReport = val;
+    else throw new Error('Invalid report to set!!!!');
+  }
+  private constructor(id: string, reports: string[]) {
+    super('Accounting', id);
+    this.id = id;
+    this.reports = reports;
+    this.lastReport = '';
+  }
+  addReport(report: string) {
+    this.reports.push(report);
+    this.lastReport = report;
+  }
+  addEmployee(employee: string) {
+    this.employees.push(employee);
+  }
+  printReports() {
+    console.log(this.reports);
+  }
 
-console.log(add(1, 2, 8, 5));
+  describe(this: Department): void {
+    console.log(`Accounting Department ${this.id} `);
+  }
+  static getInstance() {
+    if (AccountingDepartment.instance) return this.instance;
+    this.instance = new AccountingDepartment('d1', []);
+    return this.instance;
+  }
+}
 
-const arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-const [a, b, c, ...rem] = arr1;
-const { name: fName, age } = person;
+const it1 = new ITDepartment('a1', ['aaa']);
+it1.addEmployee('abc');
+it1.printEmployeeInfo();
+it1.describe();
 
-console.log(a, b, c, rem, fName);
-// export {};
+// const acnt = new AccountingDepartment('a1', ['aaa']);
+const acnt = AccountingDepartment.getInstance();
+acnt.addReport('abc');
+acnt.printReports();
+acnt.describe();
+acnt.mostRecentReport = 'jjjj';
+console.log(acnt.mostRecentReport);
+acnt.printReports();
+
+it1.addEmployee('add');
+acnt.addEmployee('adddd');
+acnt.printEmployeeInfo();
+// const abc = new Department('Accounting');
+
+// abc.describe();
+// // console.log(abc);
+// const dummyDep = { name: 'aaaa', describe: abc.describe };
+
+// console.log(dummyDep.describe());
