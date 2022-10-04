@@ -1,102 +1,78 @@
-abstract class Department {
-  protected name: string;
-  public readonly id: string;
-  protected employees: string[];
-  static countObj: number = 0;
+console.log('hello');
 
-  constructor(name: string, id: string) {
-    this.name = name;
-    this.employees = [];
-    this.id = id;
-  }
-  abstract describe(this: Department): void;
+const names: Array<string> = ['aaa', 'hbuhbuh', 'bhbu'];
+console.log(names);
 
-  addEmployee(employee: string) {
-    Department.incCount();
-    this.employees.push(employee);
+const promise: Promise<string> = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('THis is done');
+  }, 2000);
+});
+
+const add = (a: number, b: number) => a + b;
+promise.then((data) => console.log(data));
+
+function merge<T extends object, U extends object>(objA: T, objB: U) {
+  return Object.assign(objA, objB);
+}
+const mergedObj = merge({ name: 'max' }, { age: 30 });
+
+console.log(mergedObj.age);
+
+let arr: [number, string][];
+arr = [[1, '2']];
+
+function samoke<T extends object, U extends keyof T>(obj: T, key: U) {
+  return obj[key];
+}
+console.log(samoke({ name: 'aaa', age: 55 }, 'age'));
+
+class Store<T> {
+  private data: T[] = [];
+  addItem(itm: T) {
+    this.data.push(itm);
   }
-  printEmployeeInfo() {
-    console.log('Countobject contains', Department.countObj);
-    console.log(this.employees);
+  removeItem(itm: T) {
+    if (this.data.indexOf(itm) !== -1)
+      this.data.splice(this.data.indexOf(itm), 1);
+    else throw new Error('Not exist');
   }
-  static incCount() {
-    this.countObj++;
+  getItems() {
+    return [...this.data];
   }
 }
-class ITDepartment extends Department {
-  admins: string[];
-  id: string;
-  constructor(id: string, admins: string[]) {
-    super('ITDepartment', id);
-    this.id = id;
-    this.admins = admins;
-  }
-  describe(this: Department): void {
-    console.log(`IT Department ${this.id}`);
-  }
-}
-class AccountingDepartment extends Department {
-  reports: string[];
-  id: string;
-  private lastReport: string;
-  private static instance: AccountingDepartment;
+const txtStore = new Store();
+txtStore.addItem('aaa');
+txtStore.addItem('aabs');
+txtStore.addItem('aabsddd');
+console.log(txtStore.getItems());
 
-  get mostRecentReport() {
-    if (this.lastReport) return this.lastReport;
-    throw new Error('No report exists!!!!');
-  }
-  set mostRecentReport(val: string) {
-    if (val) this.lastReport = val;
-    else throw new Error('Invalid report to set!!!!');
-  }
-  private constructor(id: string, reports: string[]) {
-    super('Accounting', id);
-    this.id = id;
-    this.reports = reports;
-    this.lastReport = '';
-  }
-  addReport(report: string) {
-    this.reports.push(report);
-    this.lastReport = report;
-  }
-  addEmployee(employee: string) {
-    this.employees.push(employee);
-  }
-  printReports() {
-    console.log(this.reports);
-  }
+const objStore = new Store();
+objStore.addItem({ name: 'aaaaa' });
+let abcd = { name: 'abcd' };
+objStore.addItem(abcd);
+objStore.addItem({ name: 'abcdefg' });
+console.log(objStore.getItems());
+objStore.removeItem(abcd);
+console.log(objStore.getItems());
 
-  describe(this: Department): void {
-    console.log(`Accounting Department ${this.id} `);
-  }
-  static getInstance() {
-    if (AccountingDepartment.instance) return this.instance;
-    this.instance = new AccountingDepartment('d1', []);
-    return this.instance;
-  }
+interface CourseGoal {
+  title: string;
+  description: string;
+  completedUntill: Date;
 }
 
-const it1 = new ITDepartment('a1', ['aaa']);
-it1.addEmployee('abc');
-it1.printEmployeeInfo();
-it1.describe();
+function setCourseGoal(
+  title: string,
+  description: string,
+  completedUntill: Date
+): CourseGoal {
+  let obj: Partial<CourseGoal> = {};
+  obj.title = title;
+  obj.description = description;
+  obj.completedUntill = completedUntill;
+  return obj as CourseGoal;
+}
 
-// const acnt = new AccountingDepartment('a1', ['aaa']);
-const acnt = AccountingDepartment.getInstance();
-acnt.addReport('abc');
-acnt.printReports();
-acnt.describe();
-acnt.mostRecentReport = 'jjjj';
-console.log(acnt.mostRecentReport);
-acnt.printReports();
-
-it1.addEmployee('add');
-acnt.addEmployee('adddd');
-acnt.printEmployeeInfo();
-// const abc = new Department('Accounting');
-
-// abc.describe();
-// // console.log(abc);
-// const dummyDep = { name: 'aaaa', describe: abc.describe };
-
-// console.log(dummyDep.describe());
+const nm: Readonly<string[]> = ['aaaa', 'efef'];
+// nm.push;
